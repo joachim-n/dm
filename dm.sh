@@ -13,15 +13,25 @@ function drroot {
 # with autocompletion.
 function dm {
   drroot;
-  cd sites/all/modules;
-  #echo contrib/$1;
-  if [ -d "contrib/$1" ]
-  then
-    cd "contrib/$1";
-  elif [ -d "custom/$1" ]
-  then
-    cd "custom/$1";
-  fi
+
+  # Look through all 'modules' folders.
+  # We expect all 'modules' folders to be subdivided into 'contrib' and 'custom'
+  # subfolders (other subfolder names will work too).
+  local module_folder_paths="sites/all/modules/* profiles/*/modules/*"
+  local modulefolders=""
+
+  for path in $module_folder_paths; do
+    modulefolders+=`find $path -maxdepth 1 -mindepth 1 -name $1 -type d`
+  done
+
+  # TODO: handle the case where there is more than one copy.
+  echo "cd $modulefolders"
+
+  # ARGH need to check that what was found is a folder, but ARGH bash:
+  # if [ $modulefolders != '' && -d $modulefolders ]; then
+  cd $modulefolders
+
+  return;
 }
 
 # Autocompletion for the above.
@@ -30,13 +40,17 @@ function _dm {
 
   drroot;
 
-  cd sites/all/modules/contrib;
-  local contrib=`ls -d -1 */`
-  #echo $contrib
+  # Find all module folders.
+  # We expect all 'modules' folders to be subdivided into 'contrib' and 'custom'
+  # subfolders (other subfolder names will work too).
+  local module_folder_paths="sites/all/modules/* profiles/*/modules/*"
+  local modulefolders=""
 
-  cd ../custom;
-  local custom=`ls -d -1 */`
+  for path in $module_folder_paths; do
+    modulefolders+=`find $path -maxdepth 1 -mindepth 1   -type d -exec basename {} \;`
+    modulefolders+=' '
+  done
 
-  COMPREPLY=( $(compgen -W '$contrib $custom' -- $cur) )
+  COMPREPLY=( $(compgen -W '$modulefolders' -- $cur) )
 }
 complete -F _dm dm
