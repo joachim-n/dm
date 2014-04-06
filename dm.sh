@@ -21,7 +21,13 @@ function dm {
   local modulefolders=""
 
   for path in $module_folder_paths; do
-    modulefolders+=`find $path -maxdepth 1 -mindepth 1 -name $1 -type d`
+    # Find command:
+    # -maxdepth / -mindepth: only find direct subfolders.
+    # -type: only look for folders.
+    # -L: cause symlinks to be treated as the type of the target, hence here
+    #   find folders that are symlinked in. For FKW reason the -L needs to be
+    #   before the path.
+    modulefolders+=`find -L $path -maxdepth 1 -mindepth 1 -name $1 -type d`
   done
 
   # TODO: handle the case where there is more than one copy.
@@ -47,7 +53,7 @@ function _dm {
   local modulefolders=""
 
   for path in $module_folder_paths; do
-    modulefolders+=`find $path -maxdepth 1 -mindepth 1   -type d -exec basename {} \;`
+    modulefolders+=`find -L $path -maxdepth 1 -mindepth 1 -type d -exec basename {} \;`
     modulefolders+=' '
   done
 
