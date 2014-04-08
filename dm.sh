@@ -28,9 +28,15 @@ function dm {
     #   find folders that are symlinked in. For FKW reason the -L needs to be
     #   before the path.
     modulefolders+=`find -L $path -maxdepth 1 -mindepth 1 -name $1 -type d`
+
+    # If we've found one, stop.
+    # TODO: if there is more than one copy, properly handle Drupal module
+    # folder location precedence.
+    if [ -n "$modulefolders" ]; then
+      break
+    fi
   done
 
-  # TODO: handle the case where there is more than one copy.
   echo "cd $modulefolders"
 
   # ARGH need to check that what was found is a folder, but ARGH bash:
