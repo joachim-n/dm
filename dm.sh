@@ -48,6 +48,8 @@ function dm {
 
 # Autocompletion for the above.
 function _dm {
+  cwd=`pwd`
+
   local cur=${COMP_WORDS[COMP_CWORD]}
 
   drroot;
@@ -64,5 +66,9 @@ function _dm {
   done
 
   COMPREPLY=( $(compgen -W '$modulefolders' -- $cur) )
+
+  # Restore the original directory, so if the user cancels the command during
+  # autocomplete they are not moved.
+  cd $cwd
 }
 complete -F _dm dm
