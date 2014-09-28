@@ -17,7 +17,7 @@ function dm {
   # Look through all 'modules' folders.
   # We expect all 'modules' folders to be subdivided into 'contrib' and 'custom'
   # subfolders (other subfolder names will work too).
-  local module_folder_paths="sites/all/modules/* profiles/*/modules/*"
+  local module_folder_paths="modules sites/all/modules/* profiles/*/modules/*"
   local modulefolders=""
 
   for path in $module_folder_paths; do
@@ -57,7 +57,7 @@ function _dm {
   # Find all module folders.
   # We expect all 'modules' folders to be subdivided into 'contrib' and 'custom'
   # subfolders (other subfolder names will work too).
-  local module_folder_paths="sites/all/modules/* profiles/*/modules/*"
+  local module_folder_paths="modules sites/all/modules/* profiles/*/modules/*"
   local modulefolders=""
 
   for path in $module_folder_paths; do
