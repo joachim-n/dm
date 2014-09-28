@@ -17,10 +17,10 @@ function dm {
   # Look through all 'modules' folders.
   # We expect all 'modules' folders to be subdivided into 'contrib' and 'custom'
   # subfolders (other subfolder names will work too).
-  local module_folder_paths="modules sites/all/modules/* profiles/*/modules/*"
+  local component_folder_paths=('modules' 'sites/all/modules/*' 'profiles/*/modules/*')
   local modulefolders=""
 
-  for path in $module_folder_paths; do
+  for path in ${component_folder_paths[@]}; do
     # Find command:
     # -maxdepth / -mindepth: only find direct subfolders.
     # -type: only look for folders.
@@ -57,10 +57,10 @@ function _dm {
   # Find all module folders.
   # We expect all 'modules' folders to be subdivided into 'contrib' and 'custom'
   # subfolders (other subfolder names will work too).
-  local module_folder_paths="modules sites/all/modules/* profiles/*/modules/*"
+  local component_folder_paths=('modules' 'sites/all/modules/*' 'profiles/*/modules/*')
   local modulefolders=""
 
-  for path in $module_folder_paths; do
+  for path in ${component_folder_paths[@]}; do
     modulefolders+=`find -L $path -maxdepth 1 -mindepth 1 -type d -exec basename {} \;`
     modulefolders+=' '
   done
