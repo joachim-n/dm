@@ -37,7 +37,7 @@ function dm {
     fi
   done
 
-  echo "cd $modulefolders"
+  echo "Changing directory to $modulefolders."
 
   # ARGH need to check that what was found is a folder, but ARGH bash:
   # if [ $modulefolders != '' && -d $modulefolders ]; then
